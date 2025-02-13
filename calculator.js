@@ -1,18 +1,13 @@
 //Select necessary elements from DOM
 //SET operationDisplay to reference '.operation' div
-//SET resultDisplay to reference '.result' div
-//SET allButtons to reference all button elements
-const operationDisplay = document.querySelector(".operation");
-const resultDisplay = document.querySelector(".result");
+const display = document.querySelector(".operation");
 const buttons = document.querySelectorAll("button");
 
 //Initialize variables
 //SET currentOperation as an empty string
 let currentOperation = "";
-//SET currentResult as an empty string
-let currentResult = "";
 let operator = null;
-let result = nunll;
+let result = null;
 
 //Function to perform calculations
 function add(a,b) { return a+b; }
@@ -34,61 +29,46 @@ function operate(num1, num2, op) {
         case "*": return multiply(num1, num2);
         case "/": return divide(num1, num2);
         default: return num2;
-        
     }
 }
 
-
-// FOR each button
-//     IF button is a number (0-9):
-//     Append its value to 'currentOperation'
-//     Update 'operationDisplay'
-
-//     ELSE IF button is a operation (+, -, *, /):
-//         IF currentOperation is empty
-//         Then do nothing
-
-//         ELSE IF current operation is operator
-//         Replace with new operator
-
-//         ELSE
-//         Append operator to 'currentOperation'
-//     Update 'operationDisplay'
-
-//     ELSE IF button is '='
-//     Append its value to 'currentResult'
-//     Update 'resultDisplay'
-
-//     ELSE IF button is 'AC'
-//     SET 'currentOperation' and 'currentDisplay' to empty string
-//     Clear the result and operation displays
 function handleButtonClick(value) {
-    if (!isNan(value)) {
-        currentOperation += value;
-    }
-    else if(["+", "-", "*", "/"].includes(value)){
-        if(!currentOperation) return;
-        if(operator) {
-            currentOperation = calculateExpression();
+    if (!isNaN(value)) {  // If it's a number
+        if (result !== null && !operator) {  // If a result exists and no operator selected
+            currentOperation = value;  // Start fresh
+            result = null;  // Reset result
+        } else {
+            currentOperation += value;  // Append to current operation
         }
-        currentOperation+= ` ${value}`;
+    } 
+    else if (["+", "-", "*", "/"].includes(value)) {  // If it's an operator
+        if (!currentOperation) return;  // Ignore if no number entered yet
+        
+        if (operator) {
+            result = calculateExpression();  // Compute previous operation
+            currentOperation = result;  // Store result
+        }
+        currentOperation += ` ${value} `;  // Ensure correct spacing
         operator = value;
-    }
-    else if (value === "=") {
-        if(!operator) return;
-        currentOperation = calculateExpression();
+        result = null;  // Reset result to allow showing ongoing operation
+    } 
+    else if (value === "=") {  // If "=" is pressed
+        if (!operator) return;
+        result = calculateExpression();
+        currentOperation = result;
         operator = null;
-    }
-    else if (value === "AC") {
+    } 
+    else if (value === "AC") {  // Reset everything
         currentOperation = "";
         operator = null;
         result = null;
     }
+
     updateDisplay();
 }
 
 function calculateExpression() {
-    let parts = currentOperation.split(" ");
+    let parts = currentOperation.split(" ").filter(part => part !== "");
     if (parts.length < 3) return currentOperation;
 
     let num1 = parts[0];
@@ -100,8 +80,7 @@ function calculateExpression() {
 }
 
 function updateDisplay() {
-    operationDisplay.textContent = currentOperation;
-    resultDisplay.textContent = result !== null ? result:0;
+    display.textContent = currentOperation || "0";
 }
 
 //Add Event Listeners to all buttons
