@@ -33,6 +33,13 @@ button {
     font-family: 'Space Grotesk'; font-size: 24px;
 }
 
+button[id="+"],
+button[id="-"],
+button[id="*"],
+button[id="/"] {
+    background-color: #ffb3c1;
+}
+
 .buttons {
     display: flex;
     gap: 8px
