@@ -1,24 +1,19 @@
-//Select necessary elements from DOM
-//SET operationDisplay to reference '.operation' div
+// DOM element references
 const display = document.querySelector(".operation");
 const buttons = document.querySelectorAll("button");
 
-//Initialize variables
-//SET currentOperation as an empty string
+// State variables
 let currentOperation = "";
 let operator = null;
 let result = null;
 
-//Function to perform calculations
+// Basic arithmetic operations
 function add(a,b) { return a+b; }
 function subtract(a,b) { return a-b; }
 function multiply(a,b) { return a*b; }
 function divide(a,b) { return b===0 ? "BAZINGA": a/b; }
 
-//Define function calculateResult(expression)
-//parse 'expression' into numbers and operators
-//compute result following correct math operations
-//return result
+// Performs calculation based on operator and two numbers
 function operate(num1, num2, op) {
     num1 = Number(num1);
     num2 = Number(num2);
@@ -32,6 +27,7 @@ function operate(num1, num2, op) {
     }
 }
 
+// Handles all button click events and updates calculator state
 function handleButtonClick(value) {
     if (!isNaN(value)) {  // If it's a number
         if (result !== null && !operator) {  // If a result exists and no operator selected
@@ -67,6 +63,7 @@ function handleButtonClick(value) {
     updateDisplay();
 }
 
+// Calculates the result of the current expression
 function calculateExpression() {
     let parts = currentOperation.split(" ").filter(part => part !== "");
     if (parts.length < 3) return currentOperation;
@@ -79,14 +76,12 @@ function calculateExpression() {
     return computedResult.toString();
 }
 
+// Updates the display with current operation or 0
 function updateDisplay() {
     display.textContent = currentOperation || "0";
 }
 
-//Add Event Listeners to all buttons
+// Add click event listeners to all calculator buttons
 buttons.forEach(button => {
     button.addEventListener("click", () => handleButtonClick(button.id))
 });
-
-//If division by zero happens
-//Display 'BAZINGA'
