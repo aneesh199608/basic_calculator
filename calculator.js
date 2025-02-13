@@ -29,32 +29,32 @@ function operate(num1, num2, op) {
 
 // Handles all button click events and updates calculator state
 function handleButtonClick(value) {
-    if (!isNaN(value)) {  // If it's a number
-        if (result !== null && !operator) {  // If a result exists and no operator selected
-            currentOperation = value;  // Start fresh
-            result = null;  // Reset result
+    if (!isNaN(value)) {
+        if (result !== null && !operator) {
+            currentOperation = value;
+            result = null;
         } else {
-            currentOperation += value;  // Append to current operation
+            currentOperation += value;
         }
     } 
-    else if (["+", "-", "*", "/"].includes(value)) {  // If it's an operator
-        if (!currentOperation) return;  // Ignore if no number entered yet
+    else if (["+", "-", "*", "/"].includes(value)) {
+        if (!currentOperation) return;
         
         if (operator) {
-            result = calculateExpression();  // Compute previous operation
-            currentOperation = result;  // Store result
+            result = calculateExpression();
+            currentOperation = result;
         }
-        currentOperation += ` ${value} `;  // Ensure correct spacing
+        currentOperation += ` ${value} `;
         operator = value;
-        result = null;  // Reset result to allow showing ongoing operation
+        result = null;
     } 
-    else if (value === "=") {  // If "=" is pressed
+    else if (value === "=") {
         if (!operator) return;
         result = calculateExpression();
         currentOperation = result;
         operator = null;
     } 
-    else if (value === "AC") {  // Reset everything
+    else if (value === "AC") {
         currentOperation = "";
         operator = null;
         result = null;
